@@ -245,33 +245,45 @@ get_character = function( name ){
 const input_box = document.getElementById("player_message_main");
 
 socket.on('stc_gpt_interaction', (data) => {
+	console.log("Recieved message: ");
+	console.dir(data);
+
+	// Get the gpt command by reference
 	let gpt_command = scene["_queue"].find( i=>i.cmd == "gpt");
-	if(data.analytics.completed){
+
+	// If the character's goal is accomplished, exit the command and ignore the response.
+	if(data.analytic_response.completed){
 		// Set command
-		scene["_variables"][gpt_command.result_variable] = data.analytics.exit_token;
-		console.log(`${gpt_command.result_variable} was set to ${data.analytics.exit_token} via GPT interaction`);
+		scene["_variables"][gpt_command.result_variable] = data.analytic_response.exit_token;
+		console.log(`${gpt_command.result_variable} was set to ${data.analytic_response.exit_token} via GPT interaction`);
 
 		// Remove GPT command
 		scene["_queue"].splice(scene["_queue"].findIndex( i=>i.cmd=="gpt" ), 1);
 		return;
 	}
 
-	let response = data.msg.match(/\[(.+)\]\[(.+)\]: (.+)/) ||  data.match(/\[(.+)\]: (.+)/);
-	console.log("Recieved message: ");
-	console.dir(data);
-	console.dir(response);
+	// Extract the name, emotion, and message content
+	let chat_response_object = data.chat_response.match(/\[(.+)\]\[(.+)\]: (.+)/) ||  data.match(/\[(.+)\]: (.+)/);
+	let name = chat_response_object[1];
+	let emotion = chat_response_object[2];
+	let content = chat_response_object[3];
 
+	// Add the message to the message queue
 	scene["_messages"].push({ 
-		name: response[1] || "???", 
-		content: response[3], 
+		name, 
+		content, 
 		speed: 1,
 		alternating: false,
 		nospeak: false,
 		time: millis(),
 	}); 
-	let char = get_character(response[1]);
-	char.emotion = ( response[2] && char.emotions.includes(response[2]) ) ? response[2] : "NEUTRAL";
-	scene["_log"].push( `[${response[1]}][${response[2]}]: ${response[3]}` )
+
+	// If it's a valid emotion, adjust the character
+	let char = get_character(name);
+	char.emotion = ( emotion && char.emotions.includes(emotion) ) ? emotion : "NEUTRAL";
+
+	// Add the message to the message log
+	scene["_log"].push( `[${name}][${emotion}]: ${content}` )
 });
 
 function is_speaking( character ){
