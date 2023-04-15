@@ -9,5 +9,6 @@
 			npm i twilio
 			npm i express
 			npm i socket.io
+			./keys.sh
 			'';
 }
