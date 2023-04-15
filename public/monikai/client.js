@@ -290,7 +290,8 @@ function mouseClicked(){
 			let last_message = scene["_messages"].splice( 0, 1 );
 			
 			console.dir(last_message[0])
-			if(last_message[0].name != "[player]"){
+			if(last_message[0].name != "[player]" && scene["_queue"].some( (i)=>i.cmd == "gpt" )){
+				input_box.value = "";
 				scene["_asking"] = true;
 			}
 			return;
@@ -334,9 +335,10 @@ function setup(){
 	input_box.style.left = `${pos[0]}px`;
 	input_box.style.top = `${pos[1]}px`;
 	input_box.style["font-size"] = `${ ceil(19 * canvas.y_scale) }px`;
-	input_box.style["width"] = `${720 * canvas.y_scale}px`;
-	input_box.style["height"] = `${97 * canvas.y_scale}px`;
+	input_box.style["width"] = `${690 * canvas.y_scale}px`;
+	input_box.style["height"] = `${65 * canvas.y_scale}px`;
 	input_box.style.display = "none";
+	input_box.value = "";
 }
 function draw(){
 	// Work the queue
@@ -505,6 +507,9 @@ function draw(){
 	rect(0, 0, 1280, 720);
 
 	// Messages
+	if( scene["_asking"] ){
+		image( assets["gui"][scene["_variables"]["_textbox_sprite"]], (1280 - 816) / 2, -166 + 720, 816, 146 );
+	}
 	if( scene["_messages"].length > 0 ){
 		image( assets["gui"][scene["_variables"]["_textbox_sprite"]], (1280 - 816) / 2, -166 + 720, 816, 146 );
 		
