@@ -1,0 +1,48 @@
+{
+	"entry":[
+		"set var=_textbox_sprite value=\"TEXTBOX_LIBITINA\"",
+		"set var=_speech_font value=\"BOLD\"",
+		"set var=_next_icon value=\"NEXT\"",
+		"set var=_curtain_opacity value=0",
+		"stage id=opening"
+		],
+	"opening": [
+		"bg background=class", 
+		"set var=_curtain_opacity value=255",
+		"set var=_speech_font value=\"BLACKITALIC\"",
+		"say msg=`...yeah, sure!`", 
+		"say msg=`I'd love to go out with you, [player]!`",
+		"say msg=`*hushed whispering* Wow, the valedictorian and star tennis player just accepted [player] asking them out!`",
+		"say msg=`[Chanting] [player]!`", 
+		"say msg=`[player]!`", 
+		"say msg=`[player]!`", 
+		"say msg=`[player]!`", 
+		"say msg=`[player]!`", 
+		"set var=_speech_font value=\"BOLD\"",
+		"say msg=`[player]!`", 
+		"say msg=`Wake up!`", 
+		"set var=_speech_font value=\"BOLDITALIC\"",
+		"say msg=`*something smacks the side of your head*`", 
+		"fade direction=in speed=2",
+		"introduce name=Nastya outfit=uniform_neutral emotion=NEUTRAL",
+		"say name=Nastya emotion=CONCERNED nospeak=true msg=`Class is over, idiot.`",
+		"psay msg=`Ehh?? Did you really have to throw something at me??`",
+		"say name=Nastya emotion=NEUTRAL msg=`I think it was a requirement.`",
+		"goal name=Nastya goal=`Figure out if [player] prefers the color blue or red.`",
+		"gpt result_var=answer exit_tokens=[BLUE],[RED] context=`[player] and Nastya are sitting next to eachother in class.`",
+		"check value=`var answer == '[RED]'`",
+		"y psay msg=`RED!!!!!`",
+		"n psay msg=`BLUE??!!!!!`"
+		],
+	"next": [
+		"bg background=class",
+		"fade direction=in",
+		"introduce name=Nastya outfit=uniform_neutral emotion=NEUTRAL xpos=50 ypos=0",
+		"say name=Nastya msg=`Monika's in a bad mood today, watch out...`",
+		"say name=Libitina msg=`I HEARD THAT!`",
+		"introduce name=Libitina outfit=uniform_neutral emotion=SAD xpos=480",
+		"say name=Nastya msg=`Eeek!`",
+		"leave name=Nastya",
+		"move name=Libitina xpos=280 speed=2",
+		"say name=Libitina emotion=HAPPY msg=`Well that's rather rude...`"]
+}

@@ -1,0 +1,37 @@
+canvas {
+    margin: 0%;
+    shape-rendering: optimizeSpeed;
+	  display: block;
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  z-index: -9999;
+}
+body {
+    margin: 0%;
+    overflow: hidden;
+}
+@font-face {
+  font-family: aller_bold;
+  src: url(/public/assets/fonts/aller.ttf);
+}
+textarea:focus, input:focus{
+    outline: none; /* Remove focused borders */
+}
+.player_message {
+	background-color: transparent; /* Set the background color to transparent */
+  border: white; /* Remove the border */
+	border-style: dashed;
+	
+  font-family: aller_bold; /* Set the font-family to the custom font stored in the server */
+	
+	resize: none;
+	
+	position: absolute;
+	display: block;
+
+  color: white; /* Set the text color */
+}
+.player_message::selection {
+  background-color: rgba(255, 192, 203, 0.5);
+}
