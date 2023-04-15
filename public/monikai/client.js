@@ -84,6 +84,7 @@ let scene = {
 			outfit: options["outfit"],
 			emotion: options["emotion"] || "NEUTRAL", 
 			description: assets["sprites"][options["name"]]["character"]["description"],
+			emotions: assets["sprites"][options["name"]]["character"]["emotions"],
 			xpos: options["xpos"] * 1 || 280,
 			ypos: options["ypos"] * 1 || 0,
 			scale: options["scale"] * 1 || 1,
@@ -269,7 +270,7 @@ socket.on('stc_gpt_interaction', (data) => {
 		time: millis(),
 	}); 
 	let char = get_character(response[1]);
-	char.emotion = ( response[2] && ["NEUTRAL"].includes(response[2]) ) ? response[2] : "NEUTRAL";
+	char.emotion = ( response[2] && char.emotions.includes(response[2]) ) ? response[2] : "NEUTRAL";
 	scene["_log"].push( `[${response[1]}][${response[2]}]: ${response[3]}` )
 });
 
