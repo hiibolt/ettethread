@@ -311,6 +311,15 @@ function mouseClicked(){
 		}
 	}
 }
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+	canvas = {
+		windowWidth,
+		windowHeight,
+		x_scale: (windowWidth / 1280),
+		y_scale: (windowHeight / 720)
+	}
+}
 
 
 function preload(){
@@ -335,7 +344,7 @@ function setup(){
 	// Start script
 	scene["_stack"] = script["entry"];
 	
-  createCanvas( windowWidth, windowHeight );
+  	createCanvas( windowWidth, windowHeight );
 	canvas = {
 		windowWidth,
 		windowHeight,
