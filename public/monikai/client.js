@@ -367,7 +367,7 @@ function draw(){
 	scene["_queue"].forEach( (i, index) => {
 		switch (i.cmd) {
 			case "gpt":
-				if( scene["_asking"] ){
+				if( scene["_asking"]  ){
 					input_box.style.display = "block";
 				}else {
 					input_box.style.display = "none";
@@ -502,25 +502,17 @@ function draw(){
 	push();
 	translate( (windowWidth - 1280 * canvas.y_scale) / 2, 0 );
 	scale( canvas.y_scale );
-	try{
-		image( assets["backgrounds"][scene["background"]], 0, 0, 1280, 720 );
-	}catch(e){
-		fatal_error( `Background ${scene["background"]} doesn't exist.`, e );
-	}
+	image( assets["backgrounds"][scene["background"]], 0, 0, 1280, 720 );
 	
 	scene["_characters"].forEach( (character) => {
 		let is_speaking_addendum = ( is_speaking( character.name ) && !scene["_messages"][0].nospeak ) ? "SPEAKING" : "";
 		let alternating_addendum = (is_speaking_addendum != "" && scene["_messages"].length > 0 && scene["_messages"][0].alternating == "true" && millis() % 3000 > 1500 ) ? "ALT" : "";
-		try{
-			push();
-			tint(255, character.opacity);
-			translate(character.xpos, character.ypos);
-			scale( character.scale );
-			image( assets["sprites"][ character.name ][ character.outfit ][ character.emotion + is_speaking_addendum + alternating_addendum ], 0, 0, 960 * 0.75, 960 * 0.75 );
-			pop();
-		}catch(e){
-			fatal_error( `Emotion ${character.emotion + is_speaking_addendum} or outfit ${character.outfit} for ${character.name} doesn't exist.`, e );
-		}
+		push();
+		tint(255, character.opacity);
+		translate(character.xpos, character.ypos);
+		scale( character.scale );
+		image( assets["sprites"][ character.name ][ character.outfit ][ character.emotion + is_speaking_addendum + alternating_addendum ], 0, 0, 960 * 0.75, 960 * 0.75 );
+		pop();
 	});
 
 	// Curtain
