@@ -24,9 +24,7 @@ let scene = {
 	"_asking": false,
 	"_log": [],
 	"_objects": [],
-	"_variables": [
-
-	],
+	"_variables": [],
 	// bg: sets the background image
 	// options:
 	// 		background: the background image to set
