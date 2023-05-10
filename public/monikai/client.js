@@ -234,6 +234,16 @@ let scene = {
 		this["_variables"][options["var"]] = eval(value.join(' '));
 		console.log(`Variable ${options["var"]} was set to ${this[options["var"]]}`);
 	},
+	"macro": function( options, stack ){
+		// Prevents overriding of predefined functions
+		if (options.name){
+			console.log(`Macro ${options.name} is reserved!`);
+			return;
+		}
+		this[options.name] = ( _ ) => {
+			this["_stack"] = [ ...stack, ...this["_stack"] ];
+		}
+	}
 }
 get_character = function( name ){
 	return scene["_characters"].find( i => i.name == name );
@@ -450,6 +460,29 @@ function draw(){
 		
 		// Activate command
 		switch (cmd[0]){
+			case "macro":
+				scene["_stack"].splice(0,1);
+
+				// Grab and remove all elements prefixed with '-'
+				let end_index = scene["_stack"]
+					.findIndex( (i)=>i.split(' ')[0] != '-' );
+				let elements = end_index != -1 ? scene["_stack"]
+					.splice(0, end_index)
+					.map( i=> {
+						// Remove x prefix
+						let ret = i.split(' ');
+						ret.shift();
+						return ret.join(' ');
+					}) : scene["_stack"].splice(0, scene["_stack"].length).map( i=> {
+						// Remove x prefix
+						let ret = i.split(' ');
+						ret.shift();
+						return ret.join(' ');
+					});
+				
+				// Call the macro builder
+				scene[cmd[0]]( options, elements );
+				break;
 			case "check":
 				// Remove base command
 				scene["_stack"].splice(0,1);
