@@ -29,8 +29,8 @@
 		"psay msg=`Ehh?? Did you really have to throw something at me??`",
 		"say name=Nastya emotion=NEUTRAL msg=`I think it was a requirement.`",
 		"goal name=Nastya goal=`Ask [player] if they're actually conscious.`",
-		"gpt result_var=answer exit_tokens=[ANSWER],[NOANSWER] context=`[player] and Nastya are sitting next to eachother in class.`",
-		"check value=`var answer == '[ANSWER]'`",
+		"gpt result_var=answer exit_tokens=[YES],[NO] context=`[player] and Nastya are sitting next to eachother in class.`",
+		"check value=`var answer == '[YES]'`",
 		"y psay msg=`oh DOPE!!!!!`",
 		"n psay msg=`WAKE UP FILTHY??!!!!!`"
 		],

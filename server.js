@@ -104,7 +104,7 @@ io.on('connection', function(socket) {
 		// Add system context
 		let chat_prompt = [
 			{ "role": "system", "content": data.characters[0].description },
-			{ "role": "system", "content": `${data.context}\nNastya's goal: ${data.characters[0].goal}\nDirect conversation to complete this goal.` },
+			{ "role": "system", "content": `${data.context}\nNastya's goal: ${data.characters[0].goal}\nDirect conversation to complete this goal. You still have not completed your goal.` },
 			{ "role": "system", "content": `Message format: [${data.characters[0].name}][${data.characters[0].emotions.join(' | ')}]: blah blah blah etc`},
 			...messages
 		];
@@ -120,7 +120,7 @@ io.on('connection', function(socket) {
 			console.log(chat_response);
 
 			// Create prompt context
-			let analytic_prompt = `Decide whether Nastya completed her goal of ${data.characters[0].goal}.\n\nConversation:\n${[...messages, chat_response].map( i=>i.content ).join('\n')}\n\nCreate a JSON file for it, similar to the following:\nExample:\n{"completed": true, "exit_token": ${data.exit_tokens.map(i=>'"'+i+'"').join('|')}}\n\nJSON File:\n{`;
+			let analytic_prompt = `Decide whether Nastya completed her goal: ${data.characters[0].goal}.\n\nConversation:\n${[...messages, chat_response].map( i=>i.content ).join('\n')}\n\nCreate a JSON file for it, similar to the following:\nExample:\n{"completed": true, "exit_token": ${data.exit_tokens.map(i=>'"'+i+'"').join('|')}}\n\nJSON File:\n{`;
 			console.log(analytic_prompt);
 
 			// Decide whether the character has completed their goal
