@@ -28,11 +28,11 @@
 		"say name=Nastya emotion=CONCERNED nospeak=true msg=`Class is over, idiot.`",
 		"psay msg=`Ehh?? Did you really have to throw something at me??`",
 		"say name=Nastya emotion=NEUTRAL msg=`I think it was a requirement.`",
-		"goal name=Nastya goal=`Figure out if [player] prefers the color blue or red.`",
-		"gpt result_var=answer exit_tokens=[BLUE],[RED] context=`[player] and Nastya are sitting next to eachother in class.`",
-		"check value=`var answer == '[RED]'`",
-		"y psay msg=`RED!!!!!`",
-		"n psay msg=`BLUE??!!!!!`"
+		"goal name=Nastya goal=`Ask [player] if they're actually conscious.`",
+		"gpt result_var=answer exit_tokens=[ANSWER],[NOANSWER] context=`[player] and Nastya are sitting next to eachother in class.`",
+		"check value=`var answer == '[ANSWER]'`",
+		"y psay msg=`oh DOPE!!!!!`",
+		"n psay msg=`WAKE UP FILTHY??!!!!!`"
 		],
 	"next": [
 		"bg background=class",
