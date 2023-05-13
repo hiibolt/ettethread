@@ -104,7 +104,7 @@ io.on('connection', function(socket) {
 		// Add system context
 		let chat_prompt = [
 			{ "role": "system", "content": data.characters[0].description },
-			{ "role": "system", "content": `${data.context}\nNastya's goal: ${data.characters[0].goal}` },
+			{ "role": "system", "content": `${data.context}\nNastya's goal: ${data.characters[0].goal}\nDirect conversation to complete this goal.` },
 			{ "role": "system", "content": `Message format: [${data.characters[0].name}][${data.characters[0].emotions.join(' | ')}]: blah blah blah etc`},
 			...messages
 		];
