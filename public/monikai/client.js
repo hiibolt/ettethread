@@ -159,17 +159,32 @@ let scene = {
 	// 		ypos: the y position to move the character to
 	//      scale: the scaling of the character's sprite
 	"move": function( options ){
-		let character = get_character( options["name"] );
-		this["_queue"].push({
-			cmd: "move",
-			character,
-			xpos: options["xpos"] || character.xpos,
-			ypos: options["ypos"] || character.ypos,
-			scale: options["scale"] || 1,
-			speed: options["speed"] || 1,
-			tick: 0,
-			blocking: true
-		});
+		if (options["name"]){
+			let character = get_character( options["name"] );
+			this["_queue"].push({
+				cmd: "move",
+				character,
+				xpos: options["xpos"] || character.xpos,
+				ypos: options["ypos"] || character.ypos,
+				scale: options["scale"] || 1,
+				speed: options["speed"] || 1,
+				tick: 0,
+				blocking: true
+			});
+		}else{
+			// Find the object based on options.id
+			let object = this["_objects"].find( (a) => a.id == options["id"] );
+			this["_queue"].push({
+				cmd: "move",
+				object,
+				xpos: options["xpos"] || object.xpos,
+				ypos: options["ypos"] || object.ypos,
+				scale: options["scale"] || 1,
+				speed: options["speed"] || 1,
+				tick: 0,
+				blocking: true
+			});
+		}
 	},
 	// fade: fades the curtain in or out
 	// options:
@@ -243,6 +258,25 @@ let scene = {
 		this[options.name] = ( _ ) => {
 			this["_stack"] = [ ...stack, ...this["_stack"] ];
 		}
+	},
+	"create_obj": function( options ){ 
+		// Create the object
+		this["_objects"].push({ 
+			id: options.id,
+			xpos: options.xpos || 600,
+			ypos: options.ypos || 300,
+			scale: options.scale || 1,
+			sprite: options.sprite
+		})
+
+		// Debug
+		console.log(`Created new object under ID ${options.id}`);
+		console.dir(options);
+	},
+	"delete_obj": function( options ){
+		// Find and remove the object based on options.id
+		let obj = this["_objects"].find( i => i.id == options.id );
+		this["_objects"].splice(this["_objects"].indexOf(obj), 1);
 	}
 }
 get_character = function( name ){
@@ -402,12 +436,24 @@ function draw(){
 				}
 				break;
 			case "move":
+				// Progress time
 				i.tick += i.speed / 1000 * deltaTime;
-				i.character.xpos = lerp(i.character.xpos, i.xpos, i.tick);
-				i.character.ypos = lerp(i.character.ypos, i.ypos, i.tick);
-				i.character.scale = lerp(i.character.scale, i.scale, i.tick);
-				if( dist( i.character.xpos, i.character.ypos, i.xpos, i.ypos ) < 1 ){
-					scene["_queue"].splice(index,1);
+
+				if(i.character){
+					i.character.xpos = lerp(i.character.xpos, i.xpos, i.tick);
+					i.character.ypos = lerp(i.character.ypos, i.ypos, i.tick);
+					i.character.scale = lerp(i.character.scale, i.scale, i.tick);
+					if( dist( i.character.xpos, i.character.ypos, i.xpos, i.ypos ) < 1 ){
+						scene["_queue"].splice(index,1);
+					}
+				}else{
+					i.object.xpos = lerp(i.object.xpos, i.xpos, i.tick);
+					i.object.ypos = lerp(i.object.ypos, i.ypos, i.tick);
+					i.object.scale = lerp(i.object.scale, i.scale, i.tick);
+					if( dist( i.object.xpos, i.object.ypos, i.xpos, i.ypos ) < 1 ){
+						scene["_queue"].splice(index,1);
+					}
+
 				}
 				break;
 			case "fade_curtain":
@@ -529,6 +575,12 @@ function draw(){
 				scene[cmd[0]]( options );
 		};
 	}
+
+	// Loop through objects
+	scene["_objects"].forEach( (object) => {
+		let img = assets["objects"][object.sprite];
+		image(img, object.xpos - img.width * object.scale / 2, object.ypos - img.height * object.scale / 2);
+	});
 	
 	push();
 	translate( (windowWidth - 1280 * canvas.y_scale) / 2, 0 );
