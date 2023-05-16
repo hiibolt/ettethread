@@ -76,6 +76,7 @@ rl.on( 'line', (line) => {
 
 			// Write the object to a human readable file
 			fs.writeFileSync( 'public/imports.txt', JSON.stringify({items:files}) );
+			console.log("Done!")
 			break;
 		default:
 			console.log(`Command ${line} not found!`);
