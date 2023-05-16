@@ -10,6 +10,7 @@
 		"bg background=main_classroom_noon", 
 		"set var=_curtain_opacity value=255",
 		"set var=_speech_font value=\"BOLDITALIC\"",
+		"ask variable=_playername acceptable=~ keep_case=true placeholder=`Who are you?`",
 		"say msg=`...yeah, sure!`", 
 		"say msg=`I'd love to go out with you, [player]!`",
 		"say msg=`*hushed whispering* Wow, the valedictorian and star tennis player just accepted [player] asking them out!`",
@@ -47,7 +48,11 @@
 		"fade direction=in speed=2",
 		"say msg=`You rub your eyes, and begin collecting your school bag.`", 
 		"say msg=`As you do so, you notice a fancy pen on your desk. You look closer to see 'Libitina' inscribed on the grip.`",
-		"say msg=`You realise that she left it here. You'll have to give it to Kiyomi on her behalf.`"
+		"say msg=`You realise that she left it here. Should you take it?`",
+		"ask variable=took_pen acceptable=yes,no placeholder=`Yes or No`",
+		"check value=`var took_pen == 'yes'`",
+		"y say msg=`You'll have to give it to Kiyomi on her behalf next time you see her. What a pain.`",
+		"n say msg=`She seems fairly well organized, so she'll likely remember she left it here anyway. Taking it might actually make it harder for her to find it.`"
 	],
 	"ignore":[
 		"introduce name=Nastya outfit=uniform_neutral emotion=NEUTRAL",

@@ -10,9 +10,6 @@ let assets = {};
 let script = {};
 
 // Variables
-let playername = "Bolt";
-
-// Variables
 var get_character;
 let canvas;
 let scene = {
@@ -135,7 +132,7 @@ let scene = {
 	// 		speed: the speed at which the player will say the message
 	"psay": function( options ){ 
 		this["_messages"].push({ 
-			name: playername, 
+			name: this["_variables"]._playername, 
 			content: options["msg"], 
 			speed: options["speed"] || 1,
 			time: millis() 
@@ -221,8 +218,20 @@ let scene = {
 			context: options["context"],
 		})
 	},
+	"ask": function( options ){
+		input_box.style.display = "block";
+		input_box.value = options.placeholder || "";
+		this["_asking"] = true;
+		this["_queue"].push({
+			cmd: `ask`,
+			acceptable: options.acceptable.split(',').map(i => i.toLowerCase()),
+			variable: options.variable,
+			keep_case: options.keep_case || false,
+			blocking: true
+		})
+	},
 	"goal": function( options ){
-		get_character(options["name"]).goal = options["goal"].replace(/\[player\]/g, playername);
+		get_character(options["name"]).goal = options["goal"].replace(/\[player\]/g, this["_variables"]._playername);
 	},
 	"set": function( options ){
 		let value = options["value"].split(' ');
@@ -382,8 +391,8 @@ function draw(){
 				}
 				
 				// Button Handling
-				let top_left = true_position( [980, 650 + cos(millis() / 600) * 2], canvas );
-				let bottom_right = true_position( [980 + 34, 650 + cos(millis() / 600) * 2 + 34], canvas );
+				var top_left = true_position( [980, 650 + cos(millis() / 600) * 2], canvas );
+				var bottom_right = true_position( [980 + 34, 650 + cos(millis() / 600) * 2 + 34], canvas );
 				if( scene["_asking"] && mouseIsPressed && mouseX > top_left[0] && mouseX < bottom_right[0] && mouseY > top_left[1] && mouseY < bottom_right[1]){
 					scene["_asking"] = false;
 					scene["_messages"].push({
@@ -394,13 +403,33 @@ function draw(){
 					});
 					scene["_log"].push(`[player]: ${input_box.value}`);
 					socket.emit( "cts_gpt_interaction", { 
-						log: scene["_log"].slice(-20).map(i=>i.replace(/\[player\]/g, `[${playername}]`)), 
+						log: scene["_log"].slice(-20).map(i=>i.replace(/\[player\]/g, `[${scene["_variables"]._playername}]`)), 
 						characters: scene["_characters"],
 						exit_tokens: i.exit_tokens,
-						context: i.context.replace(/\[player\]/g, playername)
+						context: i.context.replace(/\[player\]/g, scene["_variables"]._playername)
 					} );
 				}
 				break;
+			case "ask":
+					// Button Handling
+					var top_left = true_position( [980, 650 + cos(millis() / 600) * 2], canvas );
+					var bottom_right = true_position( [980 + 34, 650 + cos(millis() / 600) * 2 + 34], canvas );
+					if( scene["_asking"] && mouseIsPressed && mouseX > top_left[0] && mouseX < bottom_right[0] && mouseY > top_left[1] && mouseY < bottom_right[1]){
+						let response = input_box.value.toLowerCase()
+						if( (i.acceptable[0] == "~" && !response.length == 0) || i.acceptable.includes(response)){
+							console.log(`${i.variable} was set to ${response}`);
+							scene["_variables"][i.variable] = i.keep_case == "true" ? input_box.value : response;
+							input_box.style.display = "none";
+							input_box.value = "";
+							scene["_asking"] = false;
+							scene["_queue"].splice(0,1);
+						}else{
+							input_box.value = "";
+							return;
+						}
+						
+					}
+					break;
 			case "move":
 				i.tick += i.speed / 1000 * deltaTime;
 				i.character.xpos = lerp(i.character.xpos, i.xpos, i.tick);
@@ -564,7 +593,7 @@ function draw(){
 		strokeWeight( 2.5 );
 		strokeCap(ROUND);
 		stroke( 0 );
-		text( scene["_messages"][0].content.replace(/\[player\]/g, playername).substring( 0, floor((millis() - scene["_messages"][0].time) / 20 * scene["_messages"][0].speed) ), 280, -123 + 720, 1280 - (280 * 2) );
+		text( scene["_messages"][0].content.replace(/\[player\]/g, scene["_variables"]._playername).substring( 0, floor((millis() - scene["_messages"][0].time) / 20 * scene["_messages"][0].speed) ), 280, -123 + 720, 1280 - (280 * 2) );
 	}
 	
 	// Continue button

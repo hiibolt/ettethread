@@ -1,5 +1,5 @@
 { pkgs ? import <nixpkgs> {} }:
-let 
+let
 	node_packages = [ "openai" "express" "socket.io" ];
 	get_node_modules = builtins.readDir ./node_modules;
 	check_package_exists = p: builtins.hasAttr p get_node_modules;
@@ -15,3 +15,4 @@ in
 		${if all_packages_exist then "echo \"All packages installed\"" else "npm install"}
 		'';
 }
+#sed -i 's/\r$//' shell.nix
