@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {} }:
-let
-	node_packages = [ "openai" "twilio" "express" "socket.io" ];
+let 
+	node_packages = [ "openai" "express" "socket.io" ];
 	get_node_modules = builtins.readDir ./node_modules;
 	check_package_exists = p: builtins.hasAttr p get_node_modules;
 	all_packages_exist = (builtins.pathExists ./node_modules) && (builtins.all (x: x == true) (map (p: check_package_exists p) node_packages));
