@@ -336,7 +336,7 @@ function windowResized() {
 		x_scale: (windowWidth / 1280),
 		y_scale: (windowHeight / 720)
 	}
-	
+
 	let pos = true_position( [275,573], canvas );
 	input_box.style.left = `${pos[0]}px`;
 	input_box.style.top = `${pos[1]}px`;
@@ -592,15 +592,18 @@ function draw(){
 		image( assets["gui"][scene["_variables"]["_textbox_sprite"]], (1280 - 816) / 2, -166 + 720, 816, 146 );
 	}
 	if( scene["_messages"].length > 0 ){
-		image( assets["gui"][scene["_variables"]["_textbox_sprite"]], (1280 - 816) / 2, -166 + 720, 816, 146 );
+		image( assets["gui"][scene["_variables"]["_textbox_sprite"]], (1280 - 816) / 2, 720 - 166, 816, 146 );
+		image( assets["gui"][scene["_variables"]["_namebox_sprite"]], (1280 - 756) / 2, 720 - 216, 246 * 0.65, 83 * 0.65 );
 		
-		textFont( assets["fonts"][scene["_variables"]["_speech_font"]], 19 );
 		textAlign( LEFT );
 		fill( 255 );
 		strokeWeight( 2.5 );
 		strokeCap(ROUND);
 		stroke( 0 );
+		textFont( assets["fonts"][scene["_variables"]["_speech_font"]], 19 );
 		text( scene["_messages"][0].content.replace(/\[player\]/g, scene["_variables"]._playername).substring( 0, floor((millis() - scene["_messages"][0].time) / 20 * scene["_messages"][0].speed) ), 280, -123 + 720, 1280 - (280 * 2) );
+		textFont( assets["fonts"][scene["_variables"]["_name_font"]], 23 );
+		text( scene["_messages"][0].name, 311, 720 - 181, 1280 - (280 * 2) );
 	}
 	
 	// Continue button
