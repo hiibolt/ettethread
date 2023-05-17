@@ -9,8 +9,9 @@
 	"opening": [
 		"bg background=main_classroom_noon", 
 		"set var=_curtain_opacity value=255",
+		"set var=_speech_font value=\"BLACKITALIC\"",
+		"ask variable=_playername acceptable=~ keep_case=true placeholder=`My name is...`",
 		"set var=_speech_font value=\"BOLDITALIC\"",
-		"ask variable=_playername acceptable=~ keep_case=true placeholder=`Who are you?`",
 		"say msg=`...yeah, sure!`", 
 		"say msg=`I'd love to go out with you, [player]!`",
 		"say msg=`*hushed whispering* Wow, the valedictorian and star tennis player just accepted [player] asking them out!`",
@@ -28,7 +29,7 @@
 		"say msg=`...`",
 		"say msg=`...`",
 		"say msg=`You try to go back to sleep, but three people are lingering and chat just loud enough for you to overhear.`", 
-		"say msg=`You can immediately tell one of them is Kiyomi from English class, just from her voice.`", 
+		"say msg=`One of them is Kiyomi from English class, her fast-paced voice is hard to miss.`", 
 		"set var=_speech_font value=\"BOLD\"", 
 		"say name=Kiyomi msg=`...wants a minimum of 5 people?! That's insane!!`", 
 		"say name=??? msg=`For such a drastic change, the school board should have allocated us more time!`", 
@@ -52,9 +53,20 @@
 		"ask variable=took_pen acceptable=yes,no placeholder=`Yes or No`",
 		"check value=`var took_pen == 'yes'`",
 		"y say msg=`You'll have to give it to Kiyomi on her behalf next time you see her. What a pain.`",
-		"n say msg=`She seems fairly well organized, so she'll likely remember she left it here anyway. Taking it might actually make it harder for her to find it.`"
+		"n say msg=`She seems fairly well organized, so she'll likely remember she left it here anyway. Taking it might actually make it harder for her to find it.`",
+		"say msg=`It looks like it's about to start raining, so you hastily collect your things and head home.`",
+		"fade direction=out",
+		"stage id=day1"
+	],
+	"day1":[
+		"bg background=main_classroom_day", 
+		"fade direction=in",
+		"set var=_speech_font value=\"BOLD\"", 
+		"introduce name=Kiyomi outfit=uniform_neutral emotion=NEUTRAL",
+		"say name=Kiyomi msg=`Helloooo???? Earth to [player]!`"
 	],
 	"ignore":[
+		"bg background=main_classroom_day", 
 		"introduce name=Nastya outfit=uniform_neutral emotion=NEUTRAL",
 		"say name=Nastya emotion=CONCERNED nospeak=true msg=`Class is over, idiot.`",
 		"psay msg=`Ehh?? Did you have to thorw it that hard??`",
