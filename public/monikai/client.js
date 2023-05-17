@@ -220,7 +220,7 @@ let scene = {
 	},
 	"ask": function( options ){
 		input_box.style.display = "block";
-		input_box.value = options.placeholder || "";
+		input_box.placeholder = options.placeholder || "";
 		this["_asking"] = true;
 		this["_queue"].push({
 			cmd: `ask`,
@@ -428,6 +428,7 @@ function draw(){
 							scene["_variables"][i.variable] = i.keep_case == "true" ? input_box.value : response;
 							input_box.style.display = "none";
 							input_box.value = "";
+							input_box.placeholder = "";
 							scene["_asking"] = false;
 							scene["_queue"].splice(0,1);
 						}else{

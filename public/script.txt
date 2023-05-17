@@ -52,7 +52,7 @@
 		"psay msg=`You rub your eyes, and begin collecting your school bag.`", 
 		"psay msg=`As you do so, you notice a fancy pen on your desk. You look closer to see 'Libitina' inscribed on the grip.`",
 		"psay msg=`You realise that she left it here. Should you take it?`",
-		"ask variable=took_pen acceptable=yes,no placeholder=`Yes or No`",
+		"ask variable=took_pen acceptable=yes,no placeholder=`Yes or no`",
 		"check value=`var took_pen == 'yes'`",
 		"y psay msg=`You'll have to give it to Kiyomi on her behalf next time you see her. What a pain.`",
 		"n psay msg=`She seems fairly well organized, so she'll likely remember she left it here anyway. Taking it might actually make it harder for her to find it.`",
