@@ -336,6 +336,13 @@ function windowResized() {
 		x_scale: (windowWidth / 1280),
 		y_scale: (windowHeight / 720)
 	}
+	
+	let pos = true_position( [275,573], canvas );
+	input_box.style.left = `${pos[0]}px`;
+	input_box.style.top = `${pos[1]}px`;
+	input_box.style["font-size"] = `${ ceil(19 * canvas.y_scale) }px`;
+	input_box.style["width"] = `${690 * canvas.y_scale}px`;
+	input_box.style["height"] = `${65 * canvas.y_scale}px`;
 }
 
 
